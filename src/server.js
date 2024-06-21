@@ -35,11 +35,12 @@ export const setupServer = () => {
     });
   });
 
-  app.get('/contacts/:contactId', async (req, res, next) => {
-    console.log('Req.params!!!!!', req.params);
+  app.get('/contacts/:contactId', async (req, res) => {
     const { contactId } = req.params;
-    console.log('contactId!!!!!', contactId);
     const contact = await getContactById(contactId);
+
+    console.log('!!!!!contactId', contactId);
+    console.log('!!!!!Req.params', req.params);
 
     // Відповідь, якщо контакт не знайдено
     if (!contact) {
