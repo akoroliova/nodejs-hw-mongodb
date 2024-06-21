@@ -35,14 +35,10 @@ export const setupServer = () => {
     });
   });
 
-  app.get('/contacts/:contactId', async (req, res) => {
+  app.get('/contacts/:contactId', async (req, res, next) => {
     const { contactId } = req.params;
     const contact = await getContactById(contactId);
 
-    console.log('!!!!!contactId', contactId);
-    console.log('!!!!!Req.params', req.params);
-
-    // Відповідь, якщо контакт не знайдено
     if (!contact) {
       res.status(404).json({
         status: 404,
@@ -51,7 +47,6 @@ export const setupServer = () => {
       return;
     }
 
-    // Відповідь, якщо контакт знайдено
     res.status(200).json({
       status: 200,
       message: `Successfully found contact with id ${contactId}!`,

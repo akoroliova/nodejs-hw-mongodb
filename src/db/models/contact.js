@@ -2,10 +2,6 @@ import { model, Schema } from 'mongoose';
 
 const contactSchema = new Schema(
   {
-    _id: {
-      type: Object,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
