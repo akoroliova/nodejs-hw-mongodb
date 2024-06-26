@@ -4,5 +4,6 @@ export const notFoundHandler = (req, res, next) => {
     message: 'Route not found',
     data: { message: 'Contact not found' },
   });
+
   next();
 };
