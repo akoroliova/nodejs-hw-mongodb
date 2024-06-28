@@ -1,4 +1,4 @@
-import { Contact } from '../db/models/Crontact.js';
+import { Contact } from '../db/models/contact';
 
 export const getAllContacts = async () => {
   const contacts = await Contact.find();
