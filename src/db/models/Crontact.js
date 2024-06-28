@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { mongooseSaveError } from './hooks.js';
 
 const contactSchema = new Schema(
   {
@@ -9,14 +10,16 @@ const contactSchema = new Schema(
     phoneNumber: {
       type: String,
       required: true,
+      match: /^\+380\d{9}$/,
     },
     email: {
       type: String,
       required: false,
+      //match: /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/,
     },
     isFavourite: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false,
     },
     contactType: {
@@ -31,5 +34,8 @@ const contactSchema = new Schema(
     versionKey: false,
   },
 );
+
+contactSchema.post('save', mongooseSaveError);
+contactSchema.post('findOneAndUpdate', mongooseSaveError);
 
 export const Contact = model('contact', contactSchema);
