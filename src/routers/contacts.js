@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import validateBody from '../utils/validateBody.js';
 import {
   getContactsController,
   getContactByIdController,
@@ -6,18 +8,9 @@ import {
   deleteContactController,
   patchContactController,
 } from '../controllers/contacts.js';
+import { contactAddSchema } from '../validation/contact-schemas.js';
 
 const router = Router();
-
-export const ctrlWrapper = (controller) => {
-  return async (req, res, next) => {
-    try {
-      await controller(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  };
-};
 
 router.get('/contacts', ctrlWrapper(getContactsController));
 
@@ -25,7 +18,11 @@ router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
 
 router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
 
-router.post('/contacts', ctrlWrapper(createContactController));
+router.post(
+  '/contacts',
+  validateBody(contactAddSchema),
+  ctrlWrapper(createContactController),
+);
 
 router.patch('/contacts/:contactId', ctrlWrapper(patchContactController));
 
