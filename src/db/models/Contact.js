@@ -1,21 +1,26 @@
 import { model, Schema } from 'mongoose';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
+import {
+  emailRegexp,
+  phoneRegexp,
+  typeList,
+} from '../../constants/contacts-constants.js';
 
 const contactSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, 'Name is required'],
     },
     phoneNumber: {
       type: String,
-      required: true,
-      match: /^\+380\d{9}$/,
+      required: [true, 'Phone number is required'],
+      match: phoneRegexp,
     },
     email: {
       type: String,
       required: false,
-      //match: /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/,
+      match: emailRegexp,
     },
     isFavourite: {
       type: Boolean,
@@ -25,7 +30,7 @@ const contactSchema = new Schema(
     contactType: {
       type: String,
       required: false,
-      enum: ['work', 'home', 'personal'],
+      enum: typeList,
       default: 'personal',
     },
   },
