@@ -6,17 +6,17 @@ import {
 } from '../constants/contacts-constants.js';
 
 export const contactAddSchema = Joi.object({
-  name: Joi.string().required(),
+  name: Joi.string().min(3).max(20).required(),
   phoneNumber: Joi.string().pattern(phoneRegexp).required(),
-  email: Joi.string().pattern(emailRegexp),
+  email: Joi.string().min(3).max(20).pattern(emailRegexp),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid(...typeList),
 });
 
 export const contactUpdateSchema = Joi.object({
-  name: Joi.string(),
+  name: Joi.string().min(3).max(20),
   phoneNumber: Joi.string().pattern(phoneRegexp),
-  email: Joi.string().pattern(emailRegexp),
+  email: Joi.string().min(3).max(20).pattern(emailRegexp),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid(...typeList),
 });
