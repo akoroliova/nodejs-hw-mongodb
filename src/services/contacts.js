@@ -11,7 +11,7 @@ export const getAllContacts = async ({
 }) => {
   const skip = (page - 1) * perPage;
 
-  const items = await Contact.find()
+  const data = await Contact.find()
     .skip(skip)
     .limit(perPage)
     .sort({ [sortBy]: sortOrder });
@@ -19,20 +19,20 @@ export const getAllContacts = async ({
   // const totalItems = await Contact.find().merge(databaseQuery).countDocuments();
   const totalItems = await Contact.find().countDocuments();
 
-  const { totalPages, hasNextPage, hasPrevPage } = calcPaginationData({
+  const { totalPages, hasNextPage, hasPreviousPage } = calcPaginationData({
     total: totalItems,
     perPage,
     page,
   });
 
   return {
-    items,
-    totalItems,
+    data,
     page,
     perPage,
+    totalItems,
     totalPages,
+    hasPreviousPage,
     hasNextPage,
-    hasPrevPage,
   };
 };
 

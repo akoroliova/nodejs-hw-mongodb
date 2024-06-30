@@ -5,9 +5,7 @@ const parseSortParams = ({ sortOrder, sortBy }, contactFieldList) => {
     ? sortOrder
     : sortOrderList[0];
 
-  const parsedSortBy = contactFieldList.includes(sortBy)
-    ? sortBy
-    : contactFieldList[0];
+  const parsedSortBy = contactFieldList.includes(sortBy) ? sortBy : 'name';
 
   return {
     sortBy: parsedSortBy,
