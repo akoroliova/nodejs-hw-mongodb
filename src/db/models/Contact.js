@@ -1,10 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { mongooseSaveError, setUpdateSettings } from './hooks.js';
-import {
-  emailRegexp,
-  phoneRegexp,
-  typeList,
-} from '../../constants/contacts-constants.js';
+import { typeList } from '../../constants/contacts-constants.js';
+import { emailRegexp, phoneRegexp } from '../../constants/index.js';
 
 const contactSchema = new Schema(
   {
