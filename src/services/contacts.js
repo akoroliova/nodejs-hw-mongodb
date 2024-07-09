@@ -62,6 +62,7 @@ export const createContact = async (payload) => {
   return contact;
 };
 
+//, userId: user._id
 export const updateContact = async (contactId, payload, options = {}) => {
   const rawResult = await Contact.findOneAndUpdate(
     { _id: contactId },

@@ -1,11 +1,17 @@
 import { model, Schema } from 'mongoose';
 import { emailRegexp } from '../../constants/index.js';
+import { ROLES } from '../../constants/index.js';
 
 const usersSchema = new Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, match: emailRegexp },
     password: { type: String, required: true },
+    role: {
+      type: String,
+      enum: [ROLES.USER],
+      default: ROLES.USER,
+    },
   },
   { timestamps: true, versionKey: false },
 );
