@@ -12,10 +12,11 @@ import parseSortParams from '../utils/parseSortParams.js';
 import parseContactFilterParams from '../utils/parseContactFilterParams.js';
 
 export const getContactsController = async (req, res) => {
+  const { _id: userId } = req.user;
   const { query } = req;
   const { page, perPage } = parsePaginationParams(query);
   const { sortBy, sortOrder } = parseSortParams(query, contactFieldList);
-  const filter = parseContactFilterParams(query);
+  const filter = { ...parseContactFilterParams(query), userId };
 
   const data = await getAllContacts({
     filter,
@@ -62,12 +63,13 @@ export const deleteContactController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
-  const contact = await createContact(req.body);
+  const { _id: userId } = req.user;
+  const data = await createContact({ ...req.body, userId });
 
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
-    data: contact,
+    data,
   });
 };
 

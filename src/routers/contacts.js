@@ -41,7 +41,6 @@ contactsRouter.delete(
   ctrlWrapper(deleteContactController),
 );
 
-//Змініть логіку роута POST /contacts, щоб при створенні нового контакту також додавалося поле userId. Значення для userId візьміть із req.user._id.
 contactsRouter.post(
   '',
   checkRoles(ROLES.USER),
