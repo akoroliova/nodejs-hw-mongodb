@@ -13,7 +13,7 @@ import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
 import {
   FIFTEEN_MINUTES,
-  THIRTY_DAYS,
+  ONE_MONTH,
   SMTP,
   TEMPLATES_DIR,
 } from '../constants/index.js';
@@ -51,7 +51,7 @@ export const loginUser = async (payload) => {
     accessToken,
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + THIRTY_DAYS),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_MONTH),
   });
 };
 
@@ -94,7 +94,7 @@ const createSession = () => {
     accessToken,
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + THIRTY_DAYS),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_MONTH),
   };
 };
 
