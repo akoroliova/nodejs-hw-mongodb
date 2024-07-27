@@ -9,8 +9,8 @@ import fs from 'node:fs/promises';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 
-import { User } from '../db/models/user.js';
-import { Session } from '../db/models/session.js';
+import { User } from '../db/models/User.js';
+import { Session } from '../db/models/Session.js';
 import {
   FIFTEEN_MINUTES,
   ONE_MONTH,
@@ -59,7 +59,7 @@ export const logoutUser = async (sessionId) => {
   await Session.deleteOne({ _id: sessionId });
 };
 
-export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
+export const refreshUserSession = async ({ sessionId, refreshToken }) => {
   const session = await Session.findOne({
     _id: sessionId,
     refreshToken,

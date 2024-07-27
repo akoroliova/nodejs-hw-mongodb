@@ -32,7 +32,7 @@ const contactSchema = new Schema(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'users',
+      ref: 'user',
       required: true,
     },
     photo: { type: String, required: false },
