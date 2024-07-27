@@ -11,7 +11,7 @@ import {
 import {
   contactAddSchema,
   contactUpdateSchema,
-} from '../validation/contact-schemas.js';
+} from '../validation/contact.js';
 import isValidId from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
