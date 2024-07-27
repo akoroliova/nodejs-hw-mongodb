@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import { env } from '../utils/env.js';
 
 export const initMongoConnection = async () => {
@@ -17,3 +18,4 @@ export const initMongoConnection = async () => {
     throw e;
   }
 };
+
