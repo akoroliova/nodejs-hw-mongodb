@@ -9,8 +9,8 @@ import fs from 'node:fs/promises';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 
-import { UsersCollection } from '../db/models/user1.js';
-import { SessionsCollection } from '../db/models/session1.js';
+import { UsersCollection } from '../db/models/user.js';
+import { SessionsCollection } from '../db/models/session.js';
 import {
   FIFTEEN_MINUTES,
   THIRTY_DAYS,
