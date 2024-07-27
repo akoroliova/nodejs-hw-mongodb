@@ -9,8 +9,8 @@ import fs from 'node:fs/promises';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 
-import { UsersCollection } from '../db/models/user.js';
-import { SessionsCollection } from '../db/models/session.js';
+import { User } from '../db/models/user.js';
+import { Session } from '../db/models/session.js';
 import {
   FIFTEEN_MINUTES,
   ONE_MONTH,
@@ -19,19 +19,19 @@ import {
 } from '../constants/index.js';
 
 export const registerUser = async (payload) => {
-  const user = await UsersCollection.findOne({ email: payload.email });
+  const user = await User.findOne({ email: payload.email });
   if (user) throw createHttpError(409, 'Email in use');
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
-  return await UsersCollection.create({
+  return await User.create({
     ...payload,
     password: encryptedPassword,
   });
 };
 
 export const loginUser = async (payload) => {
-  const user = await UsersCollection.findOne({ email: payload.email });
+  const user = await User.findOne({ email: payload.email });
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
@@ -41,12 +41,12 @@ export const loginUser = async (payload) => {
     throw createHttpError(401, 'Unauthorized');
   }
 
-  await SessionsCollection.deleteOne({ userId: user._id });
+  await Session.deleteOne({ userId: user._id });
 
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
 
-  return await SessionsCollection.create({
+  return await Session.create({
     userId: user._id,
     accessToken,
     refreshToken,
@@ -56,11 +56,11 @@ export const loginUser = async (payload) => {
 };
 
 export const logoutUser = async (sessionId) => {
-  await SessionsCollection.deleteOne({ _id: sessionId });
+  await Session.deleteOne({ _id: sessionId });
 };
 
 export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
-  const session = await SessionsCollection.findOne({
+  const session = await Session.findOne({
     _id: sessionId,
     refreshToken,
   });
@@ -78,9 +78,9 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
 
   const newSession = createSession();
 
-  await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+  await Session.deleteOne({ _id: sessionId, refreshToken });
 
-  return await SessionsCollection.create({
+  return await Session.create({
     userId: session.userId,
     ...newSession,
   });
@@ -99,7 +99,7 @@ const createSession = () => {
 };
 
 export const requestResetToken = async (email) => {
-  const user = await UsersCollection.findOne({ email });
+  const user = await User.findOne({ email });
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
@@ -156,7 +156,7 @@ export const resetPassword = async (payload) => {
     throw err;
   }
 
-  const user = await UsersCollection.findOne({
+  const user = await User.findOne({
     email: entries.email,
     _id: entries.sub,
   });
@@ -167,10 +167,7 @@ export const resetPassword = async (payload) => {
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
-  await UsersCollection.updateOne(
-    { _id: user._id },
-    { password: encryptedPassword },
-  );
+  await User.updateOne({ _id: user._id }, { password: encryptedPassword });
 
-  await SessionsCollection.deleteMany({ userId: user._id });
+  await Session.deleteMany({ userId: user._id });
 };
